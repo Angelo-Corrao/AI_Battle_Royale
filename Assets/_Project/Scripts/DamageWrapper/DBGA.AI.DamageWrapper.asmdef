@@ -1,0 +1,17 @@
+{
+    "name": "DBGA.AI.DamageWrapper",
+    "rootNamespace": "DBGA.AI.DamageWrapper",
+    "references": [
+        "GUID:2bb7c77cb8a346345a457f1d09b1dd6f",
+        "GUID:a7e8c503f097644449fe847e52813f0d"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

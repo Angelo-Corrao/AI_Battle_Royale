@@ -1,0 +1,18 @@
+{
+    "name": "DBGA.AI.Weapon",
+    "rootNamespace": "DBGA.AI.Weapon",
+    "references": [
+        "GUID:2bb7c77cb8a346345a457f1d09b1dd6f",
+        "GUID:f51ebe6a0ceec4240a699833d6309b23",
+        "GUID:1f6b3bf3915b0b34aa2f167819249f99"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

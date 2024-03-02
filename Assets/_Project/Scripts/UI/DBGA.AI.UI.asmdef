@@ -1,0 +1,16 @@
+{
+    "name": "DBGA.AI.UI",
+    "rootNamespace": "DBGA.AI.UI",
+    "references": [
+        "GUID:2bb7c77cb8a346345a457f1d09b1dd6f"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

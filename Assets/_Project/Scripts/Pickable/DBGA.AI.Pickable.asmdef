@@ -1,0 +1,19 @@
+{
+    "name": "DBGA.AI.Pickable",
+    "rootNamespace": "DBGA.AI.Pickable",
+    "references": [
+        "GUID:2bb7c77cb8a346345a457f1d09b1dd6f",
+        "GUID:1f6b3bf3915b0b34aa2f167819249f99",
+        "GUID:47f04e0feeee79a439b52f26673b91ad",
+        "GUID:91dda2d5a552fad40b8bcf18a0113aca"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

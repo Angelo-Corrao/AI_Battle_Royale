@@ -1,0 +1,17 @@
+{
+    "name": "DBGA.AI.Sensors",
+    "rootNamespace": "DBGA.AI.Sensors",
+    "references": [
+        "GUID:2bb7c77cb8a346345a457f1d09b1dd6f",
+        "GUID:59e4b4f6484798a439f6326eea0b4783"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
