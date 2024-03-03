@@ -45,7 +45,7 @@ namespace DBGA.AI.AIs.CorraoAngelo
 			Vector3 direction = (positionToMove - agent.transform.position).normalized;
 			directionToMove = new Vector2(direction.x, direction.z);
 
-			if (actualDistance > 1) {
+			if (actualDistance > 1.5f) {
 				playerMovement.MoveToward(directionToMove);
 				playerMovement.SetDirection(directionToMove);
 

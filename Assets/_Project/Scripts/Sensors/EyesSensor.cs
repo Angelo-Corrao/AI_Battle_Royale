@@ -31,16 +31,24 @@ namespace DBGA.AI.Sensors
 			List<GameObject> targets = new List<GameObject>();
 			Collider[] hitColliders = Physics.OverlapSphere(transform.position, range);
 
-			foreach (var e in hitColliders) {
-                if (e.gameObject.CompareTag("Player"))
-                {
-                    Vector3 directionTarget = (e.transform.position - transform.forward).normalized;
-				    if (Vector3.Dot(transform.forward, directionTarget) > Mathf.Cos(angle))
-					    continue;
+			foreach (var e in hitColliders)
+			{
+				// Skip if it's ourself or if it's not a Player
+				if (e.gameObject == gameObject || !e.gameObject.CompareTag(enemiesTag))
+					continue;
 
-				    if (e.gameObject != gameObject && e.CompareTag(enemiesTag))
-					    targets.Add(e.gameObject);
-                }
+				Vector3 directionTarget = (e.transform.position - transform.position).normalized;
+				// Skip if it's not in the vision cone
+				if (Vector3.Dot(transform.forward, directionTarget) < Mathf.Cos(angle * Mathf.Rad2Deg))
+					continue;
+
+				// Check if there are obstacles between the two players
+				RaycastHit hit;
+				if (Physics.Raycast(transform.position, directionTarget, out hit, range))
+				{
+					if (hit.collider.gameObject.CompareTag(enemiesTag))
+						targets.Add(e.gameObject);
+				}
 			}
 
 			return targets;

@@ -38,7 +38,7 @@ namespace DBGA.AI.AIs.CorraoAngelo
 				return nodeState;
 			}
 
-			// Calculate nearest weapon
+			// Calculate nearest armor
 			BehaviorTree agent;
 			blackboard.TryGetValueFromDictionary("agent", out agent);
 			float nearestDistance = (nearArmors[0].transform.position - agent.transform.position).sqrMagnitude;
@@ -56,7 +56,7 @@ namespace DBGA.AI.AIs.CorraoAngelo
 
 			blackboard.SetValueToDictionary("positionToMove", nearestArmor.transform.position);
 			blackboard.SetValueToDictionary("armorToPick", nearestArmor);
-
+			
 			nodeState = NodeState.SUCCESS;
 			return nodeState;
 		}

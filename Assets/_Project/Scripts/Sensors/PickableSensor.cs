@@ -32,8 +32,19 @@ namespace DBGA.AI.Sensors
             var hitColliders = Physics.OverlapSphere(transform.position, range, pickableLayer);
 
             foreach (var collider in hitColliders)
-                if (collider.TryGetComponent<T>(out _))
-                    nearPickables.Add(collider.gameObject);
+            {
+                if (!collider.TryGetComponent<T>(out _))
+                    continue;
+                
+				Vector3 directionTarget = (collider.transform.position - transform.position).normalized;
+
+				RaycastHit hit;
+                if (Physics.Raycast(transform.position, directionTarget, out hit, range))
+                {
+                    if (hit.collider.TryGetComponent<T>(out _))
+                        nearPickables.Add(collider.gameObject);
+                }
+			} 
 
             return nearPickables;
         }
