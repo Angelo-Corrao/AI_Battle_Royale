@@ -35,7 +35,7 @@ namespace DBGA.AI.Pickable
             transform.parent = target.transform;
             transform.localPosition = Vector3.zero;
             transform.localPosition = new Vector3(transform.localPosition.x + 0.5f, 0.6f, transform.localPosition.z + 0.5f);
-            gameObject.layer = 0;
+            gameObject.layer = 2;
             transform.localRotation = Quaternion.identity;
 		}
     }

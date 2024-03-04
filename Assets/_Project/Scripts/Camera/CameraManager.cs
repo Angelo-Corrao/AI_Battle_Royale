@@ -18,8 +18,11 @@ namespace DBGA.AI.Camera
             if (timer <= 0)
             {
                 players = GameObject.FindGameObjectsWithTag("Player").ToList();
-                followAgent = players[Random.Range(0,players.Count)].transform;
-                timer = 10;
+                if (players.Count > 0 )
+                {
+                    followAgent = players[Random.Range(0,players.Count)].transform;
+                    timer = 10;
+                }
             }
             if (followAgent)
                 transform.position = followAgent.position + camerOffset;

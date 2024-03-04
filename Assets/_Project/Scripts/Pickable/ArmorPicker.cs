@@ -35,6 +35,7 @@ namespace DBGA.AI.Pickable
             transform.parent = target.transform;
             transform.localPosition = Vector3.zero;
             transform.localRotation = Quaternion.identity;
+			gameObject.layer = 2;
 			Armor armorObject = (Armor)armor;
 			transform.parent.TryGetComponent<DamageWrapper>(out armorDamageWrapper);
             armorObject.damageWrapper = armorDamageWrapper;

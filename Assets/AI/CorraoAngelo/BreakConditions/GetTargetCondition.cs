@@ -1,21 +1,21 @@
 using DBGA.AI.Sensors;
-using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 namespace DBGA.AI.AIs.CorraoAngelo
 {
-    public class GetTargetCondition : Node
+    public class GetTargetCondition : BreakConditions
     {
 		private EyesSensor eyeSensor;
 
-		public GetTargetCondition(EyesSensor eyeSensor, ref BlackBoard blackboard) {
+		public GetTargetCondition(EyesSensor eyeSensor, ref BlackBoard blackboard)
+			: base(ref blackboard)
+		{
 			this.eyeSensor = eyeSensor;
-			this.blackboard = blackboard;
 		}
 
-		public override NodeState Evaluate() {
+		public override NodeState Evaluate()
+		{
 			List<GameObject> enemies = new List<GameObject>();
 			enemies = eyeSensor.GetEnemiesTargets();
 

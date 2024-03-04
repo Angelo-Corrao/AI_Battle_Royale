@@ -1,6 +1,4 @@
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 
 namespace DBGA.AI.AIs.CorraoAngelo
 {
@@ -8,12 +6,31 @@ namespace DBGA.AI.AIs.CorraoAngelo
     {
 		protected Node childNode;
 
-		public Inverter(Node childNode, ref BlackBoard blackboard) {
+		public Inverter(Node childNode, ref BlackBoard blackboard, List<BreakConditions> breakConditions = null)
+			: base(ref blackboard, breakConditions)
+		{
 			this.childNode = childNode;
-			this.blackboard = blackboard;
 		}
 
-		public override NodeState Evaluate() {
+		public override NodeState Evaluate()
+		{
+			if (blackboard.TryGetValueFromDictionary("isAnyNodeRunning", out bool result))
+			{
+				if (result)
+				{
+					if (nodeState == NodeState.RUNNING)
+					{
+						nodeState = childNode.Evaluate();
+						return nodeState;
+					}
+					else
+					{
+						nodeState = NodeState.DEFAULT;
+						return nodeState;
+					}
+				}
+			}
+
 			switch (childNode.Evaluate()) {
 				case NodeState.RUNNING:
 					nodeState = NodeState.RUNNING;

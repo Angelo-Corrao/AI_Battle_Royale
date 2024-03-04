@@ -39,9 +39,9 @@ namespace DBGA.AI.Sensors
 
 				Vector3 directionTarget = (e.transform.position - transform.position).normalized;
 				// Skip if it's not in the vision cone
-				if (Vector3.Dot(transform.forward, directionTarget) < Mathf.Cos(angle * Mathf.Rad2Deg))
+				if (Vector3.Dot(transform.forward, directionTarget) < Mathf.Cos(angle))
 					continue;
-
+				
 				// Check if there are obstacles between the two players
 				RaycastHit hit;
 				if (Physics.Raycast(transform.position, directionTarget, out hit, range))

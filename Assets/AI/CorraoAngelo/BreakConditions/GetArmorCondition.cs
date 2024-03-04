@@ -1,18 +1,17 @@
 using DBGA.AI.Sensors;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace DBGA.AI.AIs.CorraoAngelo
 {
-	public class GetArmorCondition : Node
+	public class GetArmorCondition : BreakConditions
 	{
 		private PickableSensor pickableSensor;
 
 		public GetArmorCondition(PickableSensor pickableSensor, ref BlackBoard blackboard)
+			: base(ref blackboard)
 		{
 			this.pickableSensor = pickableSensor;
-			this.blackboard = blackboard;
 		}
 
 		public override NodeState Evaluate()

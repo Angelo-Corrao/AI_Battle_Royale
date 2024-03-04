@@ -1,21 +1,21 @@
 using DBGA.AI.Sensors;
-using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 namespace DBGA.AI.AIs.CorraoAngelo
 {
-    public class GetWeaponCondition : Node
+    public class GetWeaponCondition : BreakConditions
     {
 		private PickableSensor pickableSensor;
 
-		public GetWeaponCondition(PickableSensor pickableSensor, ref BlackBoard blackboard) {
+		public GetWeaponCondition(PickableSensor pickableSensor, ref BlackBoard blackboard)
+			: base(ref blackboard)
+		{
 			this.pickableSensor = pickableSensor;
-			this.blackboard = blackboard;
 		}
 
-		public override NodeState Evaluate() {
+		public override NodeState Evaluate()
+		{
 			List<GameObject> nearWeapons = new List<GameObject>();
 			nearWeapons = pickableSensor.GetNearWeapons();
 

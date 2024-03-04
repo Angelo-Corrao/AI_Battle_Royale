@@ -1,5 +1,4 @@
 using DBGA.AI.Sensors;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -9,56 +8,53 @@ namespace DBGA.AI.AIs.CorraoAngelo
 	{
 		private PickableSensor pickableSensor;
 
-		public GetArmor(PickableSensor pickableSensor, ref BlackBoard blackboard)
+		public GetArmor(PickableSensor pickableSensor, ref BlackBoard blackboard, List<BreakConditions> breakConditions = null) 
+			: base(ref blackboard, breakConditions)
 		{
 			this.pickableSensor = pickableSensor;
-			this.blackboard = blackboard;
 		}
 
 		public override NodeState Evaluate()
 		{
-			if (blackboard.TryGetValueFromDictionary("isAnyNodeRunning", out bool isAnyNodeRunning))
+			NodeState parentState = base.Evaluate();
+
+			if (parentState == NodeState.SUCCESS)
 			{
-				if (isAnyNodeRunning)
+				List<GameObject> nearArmors = new List<GameObject>();
+				nearArmors = pickableSensor.GetNearArmors();
+
+				if (nearArmors.Count == 0)
 				{
-					if (nodeState != NodeState.RUNNING)
+					nodeState = NodeState.FAILURE;
+					return nodeState;
+				}
+
+				// Calculate nearest armor
+				BehaviorTree agent;
+				blackboard.TryGetValueFromDictionary("agent", out agent);
+				float nearestDistance = (nearArmors[0].transform.position - agent.transform.position).sqrMagnitude;
+				GameObject nearestArmor = nearArmors[0];
+
+				foreach (var armor in nearArmors)
+				{
+					float distance = (armor.transform.position - agent.transform.position).sqrMagnitude;
+					if (distance < nearestDistance)
 					{
-						nodeState = NodeState.DEFAULT;
-						return nodeState;
+						nearestDistance = distance;
+						nearestArmor = armor;
 					}
 				}
-			}
 
-			List<GameObject> nearArmors = new List<GameObject>();
-			nearArmors = pickableSensor.GetNearArmors();
-
-			if (nearArmors.Count == 0)
-			{
-				nodeState = NodeState.FAILURE;
+				blackboard.SetValueToDictionary("positionToMove", nearestArmor.transform.position);
+				blackboard.SetValueToDictionary("armorToPick", nearestArmor);
+			
+				nodeState = NodeState.SUCCESS;
 				return nodeState;
 			}
-
-			// Calculate nearest armor
-			BehaviorTree agent;
-			blackboard.TryGetValueFromDictionary("agent", out agent);
-			float nearestDistance = (nearArmors[0].transform.position - agent.transform.position).sqrMagnitude;
-			GameObject nearestArmor = nearArmors[0];
-
-			foreach (var armor in nearArmors)
-			{
-				float distance = (armor.transform.position - agent.transform.position).sqrMagnitude;
-				if (distance < nearestDistance)
-				{
-					nearestDistance = distance;
-					nearestArmor = armor;
-				}
-			}
-
-			blackboard.SetValueToDictionary("positionToMove", nearestArmor.transform.position);
-			blackboard.SetValueToDictionary("armorToPick", nearestArmor);
-			
-			nodeState = NodeState.SUCCESS;
-			return nodeState;
+			else if (parentState == NodeState.FAILURE)
+				return NodeState.FAILURE;
+			else
+				return NodeState.DEFAULT;
 		}
 	}
 }

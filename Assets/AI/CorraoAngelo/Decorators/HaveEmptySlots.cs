@@ -1,6 +1,4 @@
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 
 namespace DBGA.AI.AIs.CorraoAngelo
 {
@@ -9,10 +7,11 @@ namespace DBGA.AI.AIs.CorraoAngelo
 		protected Node childNode;
 		private Inventory.Inventory inventory;
 
-		public HaveEmptySlots(Node childNode, Inventory.Inventory inventory, ref BlackBoard blackboard) {
+		public HaveEmptySlots(Node childNode, Inventory.Inventory inventory, ref BlackBoard blackboard, List<BreakConditions> breakConditions = null)
+			: base(ref blackboard, breakConditions)
+		{
 			this.childNode = childNode;
 			this.inventory = inventory;
-			this.blackboard = blackboard;
 		}
 
 		public override NodeState Evaluate() {

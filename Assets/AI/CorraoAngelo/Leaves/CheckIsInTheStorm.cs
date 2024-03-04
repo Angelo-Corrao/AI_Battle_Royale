@@ -1,16 +1,18 @@
 using DBGA.AI.Movement;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace DBGA.AI.AIs.CorraoAngelo
 {
-	public class Aim : Node {
-		private PlayerMovement playerMovement;
+    public class CheckIsInTheStorm : Node
+    {
+		private Storm.Storm storm;
 
-		public Aim(PlayerMovement playerMovement, ref BlackBoard blackboard, List<BreakConditions> breakConditions = null) 
+		public CheckIsInTheStorm(Storm.Storm storm, ref BlackBoard blackboard, List<BreakConditions> breakConditions = null)
 			: base(ref blackboard, breakConditions)
 		{
-			this.playerMovement = playerMovement;
+			this.storm = storm;
 		}
 
 		public override NodeState Evaluate()
@@ -22,15 +24,17 @@ namespace DBGA.AI.AIs.CorraoAngelo
 				BehaviorTree agent;
 				blackboard.TryGetValueFromDictionary("agent", out agent);
 
-				if (blackboard.TryGetValueFromDictionary("targetEnemy", out GameObject enemy))
-				{
-					Vector3 direction = (enemy.transform.position - agent.transform.position).normalized;
-					playerMovement.SetDirection(new Vector2(direction.x, direction.z));
+				Vector3 center = storm.GetCenter();
+				float radius = storm.GetRadius();
 
+				float distance = (center - agent.transform.position).magnitude;
+
+				if (distance <= radius)
+					nodeState = NodeState.FAILURE;
+				else
+				{
 					nodeState = NodeState.SUCCESS;
 				}
-				else
-					nodeState = NodeState.FAILURE;
 
 				return nodeState;
 			}

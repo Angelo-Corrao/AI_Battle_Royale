@@ -1,30 +1,24 @@
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 
 namespace DBGA.AI.AIs.CorraoAngelo
 {
 	[System.Serializable]
 	public class Selector : Node {
 		protected List<Node> childNodes = new List<Node>();
-		protected List<Node> breakConditions = new List<Node>();
 
-		public Selector(List<Node> childNodes, ref BlackBoard blackboard, List<Node> breakConditions = null) {
+		public Selector(List<Node> childNodes, ref BlackBoard blackboard, List<BreakConditions> breakConditions = null)
+			: base(ref blackboard, breakConditions)
+		{
 			this.childNodes = childNodes;
-			this.blackboard = blackboard;
-			if (breakConditions == null)
-				this.breakConditions = new List<Node>();
-			else
-				this.breakConditions = breakConditions;
 		}
 
 		public override NodeState Evaluate() {
-			if (blackboard.TryGetValueFromDictionary("isAnyNodeRunning", out bool result)) {
-				if (result) {
+			if (blackboard.TryGetValueFromDictionary("isAnyNodeRunning", out bool isAnyNodeRunning)) {
+				if (isAnyNodeRunning) {
 					if (nodeState == NodeState.RUNNING) {
 						// Break Conditions
-						foreach (Node node in breakConditions) {
-							if (node.Evaluate() == NodeState.SUCCESS) {
+						foreach (BreakConditions breakConditions in breakConditions) {
+							if (breakConditions.Evaluate() == NodeState.SUCCESS) {
 								nodeState = NodeState.FAILURE;
 								return nodeState;
 							}

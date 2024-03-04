@@ -1,9 +1,6 @@
-using DBGA.AI.Common;
 using DBGA.AI.Pickable;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static Codice.Client.Common.WebApi.WebApiEndpoints;
 
 namespace DBGA.AI.AIs.CorraoAngelo
 {
@@ -11,33 +8,35 @@ namespace DBGA.AI.AIs.CorraoAngelo
     {
 		private Picker picker;
 
-        public PickWeapon(Picker picker, ref BlackBoard blackboard) {
+        public PickWeapon(Picker picker, ref BlackBoard blackboard, List<BreakConditions> breakConditions = null)
+			: base(ref blackboard, breakConditions)
+		{
             this.picker = picker;
-            this.blackboard = blackboard;
         }
 
-		public override NodeState Evaluate() {
-			if (blackboard.TryGetValueFromDictionary("isAnyNodeRunning", out bool isAnyNodeRunning)) {
-				if (isAnyNodeRunning) {
-					if (nodeState != NodeState.RUNNING) {
-						nodeState = NodeState.DEFAULT;
-						return nodeState;
+		public override NodeState Evaluate()
+		{
+			NodeState parentState = base.Evaluate();
+
+			if (parentState == NodeState.SUCCESS)
+			{
+				if (blackboard.TryGetValueFromDictionary("weaponToPick", out GameObject weaponObject))
+				{
+					if (weaponObject.TryGetComponent<WeaponPicker>(out WeaponPicker weaponPicker))
+					{
+						BehaviorTree agent;
+						blackboard.TryGetValueFromDictionary("agent", out agent);
+						weaponPicker.Interact(agent.gameObject);
 					}
 				}
-			}
-
-			if (blackboard.TryGetValueFromDictionary("weaponToPick", out GameObject weaponObject))
-			{
-				if (weaponObject.TryGetComponent<WeaponPicker>(out WeaponPicker weaponPicker))
-				{
-					BehaviorTree agent;
-					blackboard.TryGetValueFromDictionary("agent", out agent);
-					weaponPicker.Interact(agent.gameObject);
-				}
-			}
 			
-			nodeState = NodeState.SUCCESS;
-            return nodeState;
+				nodeState = NodeState.SUCCESS;
+				return nodeState;
+			}
+			else if (parentState == NodeState.FAILURE)
+				return NodeState.FAILURE;
+			else
+				return NodeState.DEFAULT;
 		}
 	}
 }

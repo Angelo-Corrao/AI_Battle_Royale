@@ -40,6 +40,9 @@ namespace DBGA.AI.AIs.CorraoAngelo
 			var getArmor = new GetArmor(pickableSensor, ref blackboard);
 			var moveToDirection = new MoveToDirection(playerMovement, 5, ref blackboard);
 			var moveToPosition = new MoveToPosition(playerMovement, ref blackboard);
+			var checkIsInTheStorm = new CheckIsInTheStorm(storm, ref blackboard);
+			var getRandomSafePosition = new GetRandomSafePosition(storm, ref blackboard);
+			var moveToSafeZone = new MoveToPosition(playerMovement, ref blackboard);
 			var pickWeapon = new PickWeapon(picker, ref blackboard);
 			var pickArmor = new PickArmor(picker, ref blackboard);
 			var reload = new Reload(inventory, ref blackboard);
@@ -56,15 +59,14 @@ namespace DBGA.AI.AIs.CorraoAngelo
 			var getWeaponSequence = new Sequence(new List<Node> { getWeapon, moveToPosition, pickWeapon }, ref blackboard);
 			var getArmorSequence = new Sequence(new List<Node> { getArmor, moveToPosition, pickArmor }, ref blackboard);
 			var targetSequence = new Sequence(new List<Node> { getTarget, aim, shoot }, ref blackboard);
-
-			var isInTheStorm = new IsInTheStorm(moveToPosition, storm, ref blackboard);
+			var stormSequence = new Sequence(new List<Node> { checkIsInTheStorm, getRandomSafePosition, moveToSafeZone }, ref blackboard, new List<BreakConditions> { targetCondition });
 
 			var haveWeapon = new HaveWeapon(getWeaponSequence, inventory, ref blackboard);
 			var haveArmor = new HaveArmor(getArmorSequence, inventory, ref blackboard);
-			var wanderSequence = new Sequence(new List<Node> { alwaysSucceedOutOfAmmo, moveToDirection }, ref blackboard, new List<Node> { weaponCondition, armorCondition });
-			var neutralSelector = new Selector(new List<Node> { haveWeapon, haveArmor, wanderSequence }, ref blackboard, new List<Node> { stormCondition, targetCondition });
+			var wanderSequence = new Sequence(new List<Node> { alwaysSucceedOutOfAmmo, moveToDirection }, ref blackboard, new List<BreakConditions> { weaponCondition, armorCondition });
+			var neutralSelector = new Selector(new List<Node> { haveWeapon, haveArmor, wanderSequence }, ref blackboard, new List<BreakConditions> { stormCondition, targetCondition });
 
-			return new Selector(new List<Node> { isInTheStorm, targetSequence, neutralSelector }, ref blackboard);
+			return new Selector(new List<Node> { stormSequence, targetSequence, neutralSelector }, ref blackboard);
 		}
 
 		protected override void SetUpBlackboard() {

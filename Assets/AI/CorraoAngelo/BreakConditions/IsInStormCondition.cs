@@ -1,22 +1,21 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 namespace DBGA.AI.AIs.CorraoAngelo
 {
-    public class IsInStormCondition : Node
+    public class IsInStormCondition : BreakConditions
     {
 		protected Node childNode;
 		private Storm.Storm storm;
 
-		public IsInStormCondition(Node childNode, Storm.Storm storm, ref BlackBoard blackboard) {
+		public IsInStormCondition(Node childNode, Storm.Storm storm, ref BlackBoard blackboard)
+			: base(ref blackboard)
+		{
 			this.childNode = childNode;
 			this.storm = storm;
-			this.blackboard = blackboard;
 		}
 
-		public override NodeState Evaluate() {
+		public override NodeState Evaluate()
+		{
 			BehaviorTree agent;
 			blackboard.TryGetValueFromDictionary("agent", out agent);
 

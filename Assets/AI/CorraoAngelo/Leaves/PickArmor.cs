@@ -1,5 +1,4 @@
 using DBGA.AI.Pickable;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -9,38 +8,35 @@ namespace DBGA.AI.AIs.CorraoAngelo
 	{
 		private Picker picker;
 
-		public PickArmor(Picker picker, ref BlackBoard blackboard)
+		public PickArmor(Picker picker, ref BlackBoard blackboard, List<BreakConditions> breakConditions = null)
+			: base(ref blackboard, breakConditions)
 		{
 			this.picker = picker;
-			this.blackboard = blackboard;
 		}
 
 		public override NodeState Evaluate()
 		{
-			if (blackboard.TryGetValueFromDictionary("isAnyNodeRunning", out bool isAnyNodeRunning))
+			NodeState parentState = base.Evaluate();
+
+			if (parentState == NodeState.SUCCESS)
 			{
-				if (isAnyNodeRunning)
+				if (blackboard.TryGetValueFromDictionary("armorToPick", out GameObject armorObject))
 				{
-					if (nodeState != NodeState.RUNNING)
+					if (armorObject.TryGetComponent<ArmorPicker>(out ArmorPicker armorPicker))
 					{
-						nodeState = NodeState.DEFAULT;
-						return nodeState;
+						BehaviorTree agent;
+						blackboard.TryGetValueFromDictionary("agent", out agent);
+						armorPicker.Interact(agent.gameObject);
 					}
 				}
-			}
 
-			if (blackboard.TryGetValueFromDictionary("armorToPick", out GameObject armorObject))
-			{
-				if (armorObject.TryGetComponent<ArmorPicker>(out ArmorPicker armorPicker))
-				{
-					BehaviorTree agent;
-					blackboard.TryGetValueFromDictionary("agent", out agent);
-					armorPicker.Interact(agent.gameObject);
-				}
+				nodeState = NodeState.SUCCESS;
+				return nodeState;
 			}
-
-			nodeState = NodeState.SUCCESS;
-			return nodeState;
+			else if (parentState == NodeState.FAILURE)
+				return NodeState.FAILURE;
+			else
+				return NodeState.DEFAULT;
 		}
 	}
 }
