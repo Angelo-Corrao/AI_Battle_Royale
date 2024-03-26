@@ -31,7 +31,8 @@ namespace DBGA.AI.AIs.CorraoAngelo
 				}
 			}
 
-			switch (childNode.Evaluate()) {
+			switch (childNode.Evaluate())
+			{
 				case NodeState.RUNNING:
 					nodeState = NodeState.RUNNING;
 					break;

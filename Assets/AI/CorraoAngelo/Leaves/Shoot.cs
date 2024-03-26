@@ -2,7 +2,8 @@ using System.Collections.Generic;
 
 namespace DBGA.AI.AIs.CorraoAngelo
 {
-	public class Shoot : Node {
+	public class Shoot : Node
+	{
 		private Inventory.Inventory inventory;
 
 		public Shoot(Inventory.Inventory inventory, ref BlackBoard blackboard, List<BreakConditions> breakConditions = null)

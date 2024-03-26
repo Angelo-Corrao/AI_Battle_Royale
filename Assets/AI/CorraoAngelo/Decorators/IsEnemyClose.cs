@@ -15,13 +15,17 @@ namespace DBGA.AI.AIs.CorraoAngelo
 
 		public override NodeState Evaluate()
 		{
-			if (blackboard.TryGetValueFromDictionary("isAnyNodeRunning", out bool result)) {
-				if (result) {
-					if (nodeState == NodeState.RUNNING) {
+			if (blackboard.TryGetValueFromDictionary("isAnyNodeRunning", out bool result))
+			{
+				if (result)
+				{
+					if (nodeState == NodeState.RUNNING)
+					{
 						nodeState = childNode.Evaluate();
 						return nodeState;
 					}
-					else {
+					else
+					{
 						nodeState = NodeState.DEFAULT;
 						return nodeState;
 					}
@@ -31,7 +35,8 @@ namespace DBGA.AI.AIs.CorraoAngelo
 			BehaviorTree agent;
 			blackboard.TryGetValueFromDictionary("agent", out agent);
 
-			if (blackboard.TryGetValueFromDictionary("targetEnemy", out GameObject enemy)) {
+			if (blackboard.TryGetValueFromDictionary("targetEnemy", out GameObject enemy))
+			{
 				float distance = (enemy.transform.position - agent.transform.position).sqrMagnitude;
 
 				if (distance <= Mathf.Pow(2, 2))

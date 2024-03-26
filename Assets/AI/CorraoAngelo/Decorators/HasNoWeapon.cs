@@ -2,12 +2,12 @@ using System.Collections.Generic;
 
 namespace DBGA.AI.AIs.CorraoAngelo
 {
-	public class HaveArmor : Node
+	public class HasNoWeapon : Node
 	{
 		protected Node childNode;
 		private Inventory.Inventory inventory;
 
-		public HaveArmor(Node childNode, Inventory.Inventory inventory, ref BlackBoard blackboard, List<BreakConditions> breakConditions = null)
+		public HasNoWeapon(Node childNode, Inventory.Inventory inventory, ref BlackBoard blackboard, List<BreakConditions> breakConditions = null)
 			: base(ref blackboard, breakConditions)
 		{
 			this.childNode = childNode;
@@ -33,7 +33,7 @@ namespace DBGA.AI.AIs.CorraoAngelo
 				}
 			}
 
-			if (inventory.armor == null)
+			if (inventory.activeWeapon == null)
 			{
 				nodeState = childNode.Evaluate();
 				return nodeState;

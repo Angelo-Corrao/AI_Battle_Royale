@@ -16,40 +16,29 @@ namespace DBGA.AI.AIs.CorraoAngelo
 			this.playerMovement = playerMovement;
 		}
 
-		public override NodeState Evaluate() 
+		public override NodeState Evaluate()
 		{
 			NodeState parentState = base.Evaluate();
 
 			if (parentState == NodeState.SUCCESS)
 			{
-				if (blackboard.TryGetValueFromDictionary("hittedObstacle", out bool hittedObstacle)) {
-					if (hittedObstacle) {
-						blackboard.SetValueToDictionary("hittedObstacle", false);
-						blackboard.SetValueToDictionary("isAnyNodeRunning", false);
-						directionToMove = Vector2.zero;
-						nodeState = NodeState.FAILURE;
-						return nodeState;
-					}
-				}
-
 				BehaviorTree agent;
 				blackboard.TryGetValueFromDictionary("agent", out agent);
 				blackboard.TryGetValueFromDictionary("positionToMove", out positionToMove);
 				// Doesn't count the y of the agent
 				float actualDistance = (positionToMove - agent.transform.position).sqrMagnitude - agent.transform.position.y;
 
-				Vector3 direction = (positionToMove - agent.transform.position).normalized;
-				directionToMove = new Vector2(direction.x, direction.z);
-
-				if (actualDistance > 1.5f) {
-					playerMovement.MoveToward(directionToMove);
-					playerMovement.SetDirection(directionToMove);
+				if (actualDistance > 1.5f)
+				{
+					playerMovement.MoveToward(positionToMove);
+					playerMovement.Rotate();
 
 					blackboard.SetValueToDictionary("isAnyNodeRunning", true);
 					nodeState = NodeState.RUNNING;
 					return nodeState;
 				}
-				else {
+				else
+				{
 					blackboard.SetValueToDictionary("isAnyNodeRunning", false);
 					directionToMove = Vector2.zero;
 					nodeState = NodeState.SUCCESS;

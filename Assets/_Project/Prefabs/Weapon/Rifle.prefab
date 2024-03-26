@@ -132,7 +132,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxAmmo: 5000
   fireRate: 0.5
-  damage: 5
+  damage: 20
   bulletLifetime: 2
   bulletSpeed: 30
   bulletSize: 1

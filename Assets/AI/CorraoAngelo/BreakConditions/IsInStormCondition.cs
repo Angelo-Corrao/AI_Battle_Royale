@@ -26,7 +26,8 @@ namespace DBGA.AI.AIs.CorraoAngelo
 
 			if (distance <= radius)
 				nodeState = NodeState.FAILURE;
-			else {
+			else 
+			{
 				blackboard.SetValueToDictionary("isAnyNodeRunning", false);
 
 				nodeState = NodeState.SUCCESS;

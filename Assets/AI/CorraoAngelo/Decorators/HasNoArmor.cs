@@ -2,12 +2,12 @@ using System.Collections.Generic;
 
 namespace DBGA.AI.AIs.CorraoAngelo
 {
-    public class HaveWeapon : Node
-    {
+	public class HasNoArmor : Node
+	{
 		protected Node childNode;
 		private Inventory.Inventory inventory;
 
-		public HaveWeapon(Node childNode, Inventory.Inventory inventory, ref BlackBoard blackboard, List<BreakConditions> breakConditions = null)
+		public HasNoArmor(Node childNode, Inventory.Inventory inventory, ref BlackBoard blackboard, List<BreakConditions> breakConditions = null)
 			: base(ref blackboard, breakConditions)
 		{
 			this.childNode = childNode;
@@ -16,20 +16,25 @@ namespace DBGA.AI.AIs.CorraoAngelo
 
 		public override NodeState Evaluate()
 		{
-			if (blackboard.TryGetValueFromDictionary("isAnyNodeRunning", out bool result)) {
-				if (result) {
-					if (nodeState == NodeState.RUNNING) {
+			if (blackboard.TryGetValueFromDictionary("isAnyNodeRunning", out bool result))
+			{
+				if (result)
+				{
+					if (nodeState == NodeState.RUNNING)
+					{
 						nodeState = childNode.Evaluate();
 						return nodeState;
 					}
-					else {
+					else
+					{
 						nodeState = NodeState.DEFAULT;
 						return nodeState;
 					}
 				}
 			}
 
-			if (inventory.activeWeapon == null) {
+			if (inventory.armor == null)
+			{
 				nodeState = childNode.Evaluate();
 				return nodeState;
 			}

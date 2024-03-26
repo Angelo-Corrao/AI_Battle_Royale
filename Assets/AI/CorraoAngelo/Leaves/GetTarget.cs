@@ -1,3 +1,4 @@
+using DBGA.AI.Movement;
 using DBGA.AI.Sensors;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,14 +8,16 @@ namespace DBGA.AI.AIs.CorraoAngelo
     public class GetTarget : Node
     {
 		private EyesSensor eyeSensor;
+		private PlayerMovement playerMovement;
 
-		public GetTarget(EyesSensor eyeSensor, ref BlackBoard blackboard, List<BreakConditions> breakConditions = null) 
+		public GetTarget(EyesSensor eyeSensor, PlayerMovement playerMovement, ref BlackBoard blackboard, List<BreakConditions> breakConditions = null) 
 			: base(ref blackboard, breakConditions)
 		{
 			this.eyeSensor = eyeSensor;
+			this.playerMovement = playerMovement;
 		}
 
-		public override NodeState Evaluate() 
+		public override NodeState Evaluate()
 		{
 			NodeState parentState = base.Evaluate();
 
@@ -23,7 +26,8 @@ namespace DBGA.AI.AIs.CorraoAngelo
 				List<GameObject> enemies = new List<GameObject>();
 				enemies = eyeSensor.GetEnemiesTargets();
 
-				if (enemies.Count == 0) {
+				if (enemies.Count == 0)
+				{
 					nodeState = NodeState.FAILURE;
 					return nodeState;
 				}
@@ -34,15 +38,18 @@ namespace DBGA.AI.AIs.CorraoAngelo
 				float nearestDistance = (enemies[0].transform.position - agent.transform.position).sqrMagnitude;
 				GameObject nearestEnemy = enemies[0];
 
-				foreach (var enemy in enemies) {
+				foreach (var enemy in enemies)
+				{
 					float distance = (enemy.transform.position - agent.transform.position).sqrMagnitude;
-					if (distance < nearestDistance) {
+					if (distance < nearestDistance)
+					{
 						nearestDistance = distance;
 						nearestEnemy = enemy;
 					}
 				}
 
 				blackboard.SetValueToDictionary("targetEnemy", nearestEnemy);
+				playerMovement.StopAgent();
 			
 				nodeState = NodeState.SUCCESS;
 				return nodeState;

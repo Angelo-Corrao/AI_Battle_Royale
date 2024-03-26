@@ -1,3 +1,4 @@
+using DBGA.AI.Movement;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor.Experimental.GraphView;
@@ -8,11 +9,13 @@ namespace DBGA.AI.AIs.CorraoAngelo
     public class GetRandomSafePosition : Node
     {
 		private Storm.Storm storm;
+		private PlayerMovement playerMovement;
 
-		public GetRandomSafePosition(Storm.Storm storm, ref BlackBoard blackboard, List<BreakConditions> breakConditions = null)
+		public GetRandomSafePosition(Storm.Storm storm, PlayerMovement playerMovement, ref BlackBoard blackboard, List<BreakConditions> breakConditions = null)
 			: base(ref blackboard, breakConditions)
 		{
 			this.storm = storm;
+			this.playerMovement = playerMovement;
 		}
 
 		public override NodeState Evaluate()
@@ -32,9 +35,17 @@ namespace DBGA.AI.AIs.CorraoAngelo
 				Vector3 dirToMove = (randomPointInsideSafe - agent.transform.position).normalized;
 				Vector2 dirToLook = new Vector2(dirToMove.x, dirToMove.z);
 
+				if (!playerMovement.IsPointReachable(randomPointInsideSafe))
+				{
+					blackboard.SetValueToDictionary("isAnyNodeRunning", true);
+					nodeState = NodeState.RUNNING;
+					return nodeState;
+				}
+
 				blackboard.SetValueToDictionary("dirToLook", dirToLook);
 				blackboard.SetValueToDictionary("positionToMove", randomPointInsideSafe);
 
+				blackboard.SetValueToDictionary("isAnyNodeRunning", false);
 				nodeState = NodeState.SUCCESS;
 				return nodeState;
 			}

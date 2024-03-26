@@ -7,41 +7,33 @@ namespace DBGA.AI.AIs.CorraoAngelo
     public class GetWeaponCondition : BreakConditions
     {
 		private PickableSensor pickableSensor;
+		private Inventory.Inventory inventory;
 
-		public GetWeaponCondition(PickableSensor pickableSensor, ref BlackBoard blackboard)
+		public GetWeaponCondition(PickableSensor pickableSensor, Inventory.Inventory inventory, ref BlackBoard blackboard)
 			: base(ref blackboard)
 		{
 			this.pickableSensor = pickableSensor;
+			this.inventory = inventory;
 		}
 
 		public override NodeState Evaluate()
 		{
+			if (inventory.activeWeapon != null)
+			{
+				nodeState = NodeState.FAILURE;
+				return nodeState;
+			}
+			
 			List<GameObject> nearWeapons = new List<GameObject>();
 			nearWeapons = pickableSensor.GetNearWeapons();
 
-			if (nearWeapons.Count == 0) {
+			if (nearWeapons.Count == 0) 
+			{
 				nodeState = NodeState.FAILURE;
 				return nodeState;
 			}
 
-			// Calculate nearest weapon
-			BehaviorTree agent;
-			blackboard.TryGetValueFromDictionary("agent", out agent);
-			float nearestDistance = (nearWeapons[0].transform.position - agent.transform.position).sqrMagnitude;
-			GameObject nearestWeapon = nearWeapons[0];
-
-			foreach (var weapon in nearWeapons) {
-				float distance = (weapon.transform.position - agent.transform.position).sqrMagnitude;
-				if (distance < nearestDistance) {
-					nearestDistance = distance;
-					nearestWeapon = weapon;
-				}
-			}
-
-			blackboard.SetValueToDictionary("positionToMove", nearestWeapon.transform.position);
-			blackboard.SetValueToDictionary("weaponToPick", nearestWeapon);
 			blackboard.SetValueToDictionary("isAnyNodeRunning", false);
-
 			nodeState = NodeState.SUCCESS;
 			return nodeState;
 		}

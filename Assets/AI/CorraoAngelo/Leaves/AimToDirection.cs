@@ -23,7 +23,8 @@ namespace DBGA.AI.AIs.CorraoAngelo
 				BehaviorTree agent;
 				blackboard.TryGetValueFromDictionary("agent", out agent);
 
-				if (blackboard.TryGetValueFromDictionary("targetEnemy", out GameObject enemy)) {
+				if (blackboard.TryGetValueFromDictionary("targetEnemy", out GameObject enemy))
+				{
 					Vector3 direction = (enemy.transform.position - agent.transform.position).normalized;
 					playerMovement.SetDirection(new Vector2(direction.x, direction.z));
 

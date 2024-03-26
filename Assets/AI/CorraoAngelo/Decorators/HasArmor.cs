@@ -2,12 +2,13 @@ using System.Collections.Generic;
 
 namespace DBGA.AI.AIs.CorraoAngelo
 {
-	public class OutOfAmmo : Node {
+	public class HasArmor : Node
+	{
 		protected Node childNode;
-		Inventory.Inventory inventory;
+		private Inventory.Inventory inventory;
 
-		public OutOfAmmo(Node childNode, Inventory.Inventory inventory, ref BlackBoard blackboard, List<BreakConditions> breakConditions = null)
-		: base(ref blackboard, breakConditions)
+		public HasArmor(Node childNode, Inventory.Inventory inventory, ref BlackBoard blackboard, List<BreakConditions> breakConditions = null)
+			: base(ref blackboard, breakConditions)
 		{
 			this.childNode = childNode;
 			this.inventory = inventory;
@@ -32,7 +33,12 @@ namespace DBGA.AI.AIs.CorraoAngelo
 				}
 			}
 
-			// MISSING FEATURE
+			if (inventory.armor != null)
+			{
+				nodeState = childNode.Evaluate();
+				return nodeState;
+			}
+
 			nodeState = NodeState.FAILURE;
 			return nodeState;
 		}

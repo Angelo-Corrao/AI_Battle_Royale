@@ -4,7 +4,8 @@ using UnityEngine;
 
 namespace DBGA.AI.AIs.CorraoAngelo
 {
-	public class GetWeapon : Node {
+	public class GetWeapon : Node
+	{
 		private PickableSensor pickableSensor;
 
 		public GetWeapon(PickableSensor pickableSensor, ref BlackBoard blackboard, List<BreakConditions> breakConditions = null) 
@@ -13,7 +14,7 @@ namespace DBGA.AI.AIs.CorraoAngelo
 			this.pickableSensor = pickableSensor;
 		}
 
-		public override NodeState Evaluate() 
+		public override NodeState Evaluate()
 		{
 			NodeState parentState = base.Evaluate();
 
@@ -22,7 +23,8 @@ namespace DBGA.AI.AIs.CorraoAngelo
 				List<GameObject> nearWeapons = new List<GameObject>();
 				nearWeapons = pickableSensor.GetNearWeapons();
 			
-				if (nearWeapons.Count == 0) {
+				if (nearWeapons.Count == 0)
+				{
 					nodeState = NodeState.FAILURE;
 					return nodeState;
 				}
@@ -33,9 +35,11 @@ namespace DBGA.AI.AIs.CorraoAngelo
 				float nearestDistance = (nearWeapons[0].transform.position - agent.transform.position).sqrMagnitude;
 				GameObject nearestWeapon = nearWeapons[0];
 
-				foreach (var weapon in nearWeapons) {
+				foreach (var weapon in nearWeapons)
+				{
 					float distance = (weapon.transform.position - agent.transform.position).sqrMagnitude;
-					if (distance < nearestDistance) {
+					if (distance < nearestDistance)
+					{
 						nearestDistance = distance;
 						nearestWeapon = weapon;
 					}

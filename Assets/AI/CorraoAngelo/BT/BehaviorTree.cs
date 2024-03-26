@@ -7,12 +7,14 @@ namespace DBGA.AI.AIs.CorraoAngelo
         private Node root;
 		protected BlackBoard blackboard = new BlackBoard();
 
-		protected void Start() {
+		protected void Start() 
+        {
             root = SetUpTree();
             SetUpBlackboard();
         }
 
-		private void Update() {
+		private void Update() 
+        {
 			if (root != null)
                 root.Evaluate();
 		}

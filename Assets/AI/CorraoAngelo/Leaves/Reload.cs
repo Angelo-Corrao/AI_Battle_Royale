@@ -2,7 +2,8 @@ using System.Collections.Generic;
 
 namespace DBGA.AI.AIs.CorraoAngelo
 {
-	public class Reload : Node {
+	public class Reload : Node
+	{
 		private Inventory.Inventory inventory;
 
 		public Reload(Inventory.Inventory inventory, ref BlackBoard blackboard, List<BreakConditions> breakConditions = null)
